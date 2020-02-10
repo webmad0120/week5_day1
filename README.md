@@ -72,3 +72,43 @@
        })
        ````
     
+    
+
+## Main points: login check
+
+Es posible comprobar de forma manual (además de haciendo uso del método `.ensureLoggedIn()` de la dependencia `connect-ensure-login`) si el usuario está logueado en la aplicación:
+  ````javascript
+  const checkLoggedIn = (req, res, next) => req.user ? next() : res.render('index', { loginErrorMessage: 'Acceso restringido' })
+  ````
+Que puede ser utilizado como *blocker*:
+  ````javascript
+  router.get("/profile", checkLoggedIn, (req, res) => res.render("profile", { user: req.user }));
+  ````
+  
+
+  
+## Main points: Roles
+
+Los roles, almacenados en cada usuario como la propiedad `role`, permiten garantizar privilegios y/o accesos a grupos de usuarios en la aplicación cubriendo, entre otros, dos escenarios:
+  - Renderizado condicional según el rol, enviándolo a la vista mediante una función reusable:
+  ````javascript
+  const isAdmin = user => user && user.role === 'ADMIN'
+  ````
+  - Limitando el acceso a una ruta, mediante un *middleware*:
+    ````javascript
+    const checkRole = roles => (req, res, next) => req.user && roles.includes(req.user.role) ? next() : res.render("index", { roleErrorMessage: `Necesitas ser  ${roles} para acceder aquí` })
+    ````
+    Que puede ser utilizado como *blocker*:
+    ````javascript
+    router.get('/edit-route', checkRole(['ADMIN, EDITOR']), (req, res) => res.render('protected-route', { user: req.user }))
+    ````
+    
+ 
+## Main points: owned items
+- Es posible relacionar items en una aplicación con el usuario que los ha creado, disponiendo de una propiedad `owner` en cada item donde almacenar el `ObjectId` de su *owner*.
+
+- Esto permite renderizar en una vista únicamnete los items asociados al *owner*:
+````javascript
+Item.find({owner: req.user._id})
+.then(itemsOwnedByUser => res.render('items-index', {itemsOwnedByUser})
+````
