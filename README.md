@@ -91,9 +91,14 @@ Que puede ser utilizado como *blocker*:
 
 Los roles, almacenados en cada usuario como la propiedad `role`, permiten garantizar privilegios y/o accesos a grupos de usuarios en la aplicación cubriendo, entre otros, dos escenarios:
   - Renderizado condicional según el rol, enviándolo a la vista mediante una función reusable:
-  ````javascript
-  const isAdmin = user => user && user.role === 'ADMIN'
-  ````
+    ````javascript
+    const isAdmin = user => user && user.role === 'ADMIN'
+    ````
+    Que puede enviarse a una vista:
+    ````javascript
+    router.get('/', (req, res) => res.render('index', { isAdmin: isAdmin(req.user) }))
+    ````
+    
   - Limitando el acceso a una ruta, mediante un *middleware*:
     ````javascript
     const checkRole = roles => (req, res, next) => req.user && roles.includes(req.user.role) ? next() : res.render("index", { roleErrorMessage: `Necesitas ser  ${roles} para acceder aquí` })
