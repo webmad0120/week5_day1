@@ -1,0 +1,21 @@
+<h1>{{title}}</h1>
+<p>Libros</p>
+
+<p>Blancanieves
+    {{#if isAdmin}}
+    <button>Borrar</button> | <button>Editar</button> | <button>Banear</button>
+    {{/if}}
+</p>
+
+<p>Wendoline en la playa
+    {{#if isAdmin}}
+    <button>Borrar</button> | <button>Editar</button> | <button>Banear</button>
+    {{/if}}
+</p>
+
+{{#if roleErrorMessage}}
+<h3 style="color: red">{{roleErrorMessage}}</h3>
+{{/if}}
+{{#if loginErrorMessage}}
+<h3 style="color: red">{{loginErrorMessage}}</h3>
+{{/if}}
