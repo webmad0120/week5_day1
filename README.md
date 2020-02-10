@@ -112,8 +112,8 @@ Los roles, almacenados en cada usuario como la propiedad `role`, permiten garant
 ## Main points: owned items
 - Es posible relacionar items en una aplicación con el usuario que los ha creado, disponiendo de una propiedad `owner` en cada item donde almacenar el `ObjectId` de su *owner*.
 
-- Esto permite renderizar en una vista únicamnete los items asociados al *owner*:
+- Esto permite renderizar en una vista únicamente los items asociados al *owner*:
 ````javascript
 Item.find({owner: req.user._id})
-.then(itemsOwnedByUser => res.render('items-index', {itemsOwnedByUser})
+  .then(itemsOwnedByUser => res.render('items-index', {itemsOwnedByUser})
 ````
